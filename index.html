@@ -2,7 +2,13 @@
 <html>
 <head>
   <title>Vue School Chat Room</title>
+  <!--Importer Vue.js à partir d'un CDN-->
   <script src="https://unpkg.com/vue"></script>
+  <!-- Le noyau de base de développement JS SDK Firebase est toujours requis et doit être répertorié en premier-->
+  <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase-app.js"></script>
+  <!--Ajoutez les produits Firebase que vous souhaitez utiliser (par exemple, Analytics, Authentication ou Cloud Firestore...)-->
+  <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+  <!--Importation de bootstrap CSS-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
@@ -19,7 +25,7 @@
   </div>
 
   <hr>
-  <!-- New Message -->
+  <!-- Nouveau Message -->
   <form @submit.prevent="storeMessage">
     <div class="form-group">
       <label>Message:</label>
@@ -35,6 +41,36 @@
 
 
 <script type="text/javascript">
+
+  // La configuration Firebase de votre application web (ce script doit être caché !!!!) 
+  const firebaseConfig = {
+    apiKey: "AIzaSyCFaipXg-e2_ZqUXZh5YiN-E13vEx_43zY",
+    authDomain: "vuejs-firebase-aaa16.firebaseapp.com",
+    databaseURL: "https://vuejs-firebase-aaa16.firebaseio.com",
+    projectId: "vuejs-firebase-aaa16",
+    storageBucket: "vuejs-firebase-aaa16.appspot.com",
+    messagingSenderId: "325781604373",
+    appId: "1:325781604373:web:e65b9a76a7edfbde52261c"
+  };
+
+  // Initialiser Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Etablir la connexion à la base de donnée
+  const database = firebase.database();
+
+  /* ***** Lecture les données en écoutant certains évènements *****
+  
+  - Dans la méthode ref (), nous spécifions le chemin que nous voulons surveiller ou écouter (ici l'objet messages)
+  - Firebase a un événement appelé 'value', qui nous informe chaque fois que les données
+    sous la référence spécifiée, change.
+  - Firebase est une base de données événementielle 
+  - Firebase nous donne un instantané des données avec snapshot.val()
+  */
+  database.ref('messages').on('value', snapshot => console.log(snapshot.val()))  
+
+
+
   new Vue({
     el: "#chat",
     data: {
