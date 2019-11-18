@@ -57,20 +57,7 @@
   firebase.initializeApp(firebaseConfig);
 
   // Etablir la connexion à la base de donnée
-  const database = firebase.database();
-
-  /* ***** Lecture les données en écoutant certains évènements *****
-  
-  - Dans la méthode ref (), nous spécifions le chemin que nous voulons surveiller ou écouter (ici l'objet messages)
-  - Firebase a un événement appelé 'value', qui nous informe chaque fois que les données
-    sous la référence spécifiée, change.
-  - Firebase est une base de données événementielle 
-  - Firebase offre un autre événement, appelé child_added qui est déclenché chaque fois qu'une propriété est
-    ajouté à l'objet que nous regardons, et le snapshot inclu la nouvelle propriété.
-  */
-  database.ref('messages').on('child_added', snapshot => console.log(snapshot.val())) // <--- lire les messages de la base de données  
-
-
+  const database = firebase.database(); 
 
   new Vue({
     el: "#chat",
@@ -84,7 +71,10 @@
         this.messages.push({text: this.messageText, nickname: this.nickname})
         this.messageText = ''
       }
-    }
+    },
+    created () {
+        database.ref('messages').on('child_added', snapshot => this.messages.push(snapshot.val()))
+    },
   })
 </script>
 </body>
