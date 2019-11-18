@@ -57,7 +57,11 @@
   firebase.initializeApp(firebaseConfig);
 
   // Etablir la connexion à la base de donnée
-  const database = firebase.database(); 
+  const database = firebase.database();
+  
+  // il est possible de stocker la référence 'messages' dans une variable
+  const messageRef = database.ref('messages')
+
 
   new Vue({
     el: "#chat",
@@ -68,12 +72,15 @@
     },
     methods: {
       storeMessage () {
-        this.messages.push({text: this.messageText, nickname: this.nickname})
+
+        // .push génère automatiquement une clé unique pour chaque nouvel enfant
+        messageRef.push({text: this.messageText, nickname: this.nickname})
+
         this.messageText = ''
       }
     },
     created () {
-        database.ref('messages').on('child_added', snapshot => this.messages.push(snapshot.val()))
+        messageRef.on('child_added', snapshot => this.messages.push(snapshot.val()))
     },
   })
 </script>
