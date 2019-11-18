@@ -65,9 +65,10 @@
   - Firebase a un événement appelé 'value', qui nous informe chaque fois que les données
     sous la référence spécifiée, change.
   - Firebase est une base de données événementielle 
-  - Firebase nous donne un instantané des données avec snapshot.val()
+  - Firebase offre un autre événement, appelé child_added qui est déclenché chaque fois qu'une propriété est
+    ajouté à l'objet que nous regardons, et le snapshot inclu la nouvelle propriété.
   */
-  database.ref('messages').on('value', snapshot => console.log(snapshot.val()))  
+  database.ref('messages').on('child_added', snapshot => console.log(snapshot.val())) // <--- lire les messages de la base de données  
 
 
 
